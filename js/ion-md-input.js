@@ -40,6 +40,9 @@ angular.module('ionMdInput', [])
         'ng-trim': attr.trim,
         'ng-blur': attr.ngBlur,
         'ng-focus': attr.ngFocus,
+        'ui-mask' : attr.mask,
+        'ng-pattern' : attr.ngPattern,
+        'ng-class' : attr.ngClass,
       }, function(value, name) {
         if (angular.isDefined(value)) {
           input.attr(name, value);
@@ -70,12 +73,18 @@ angular.module('ionMdInput', [])
         };
 
         //Lets check if there is a value on load
-        ionic.DomUtil.ready(function() {
-          if (mdInput.value === '') {
-            mdInput.className = mdInput.className.replace(reg, ' ');
-          } else {
+        $scope.$watch(attr.ngModel,function(newValue, oldValue){
+          console.log(newValue);
+          if(!(newValue === '' || newValue == null)){
             mdInput.classList.add(dirtyClass);
           }
+        }, true);
+        ionic.DomUtil.ready(function() {
+          
+          if (mdInput.value === '' ) {
+            mdInput.className = mdInput.className.replace(reg, ' ');
+          } 
+          mdInput.value = ''
         });
         // Here we are saying, on 'blur', call toggleClass, on mdInput
         ionic.on('blur', toggleClass, mdInput);
